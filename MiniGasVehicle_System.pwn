@@ -36,22 +36,26 @@ forward TurnOnVehicle(playerid);
 public TurnOnVehicle(playerid)
 {
     new vehiculoid = GetPlayerVehicleID(playerid);
-    if(Motor[vehiculoid] == 0)
-    {
-        GetVehicleParamsEx(vehiculoid,engine, lights, alarm, doors, bonnet, boot, objective);
-        SetVehicleParamsEx(vehiculoid, 1, lights, alarm, doors, bonnet, boot, objective);
-        Motor[vehiculoid] = 1;
-        GameTextForPlayer(playerid,"~g~~h~Vehiculo encendido",1000,3);
-        TimerGas[playerid] = SetTimerEx("BajarGasolina", 180000, true, "d", playerid);
+	if(Motor[vehiculoid] == 0)
+	{
+		if(Gasolina[vehiculoid] >= 1)
+		{
+		GetVehicleParamsEx(vehiculoid,engine, lights, alarm, doors, bonnet, boot, objective);
+		SetVehicleParamsEx(vehiculoid, 1, lights, alarm, doors, bonnet, boot, objective);
+		Motor[vehiculoid] = 1;
+		GameTextForPlayer(playerid,"~g~~h~Vehiculo encendido",1000,3);
+		TimerGas[playerid] = SetTimerEx("BajarGasolina", 180000, true, "d", playerid);
+    	}
+    	else return GameTextForPlayer(playerid, "Vehiculo sin gasolina.", 1000, 4);
     }
     else 
     {
-        GetVehicleParamsEx(vehiculoid,engine, lights, alarm, doors, bonnet, boot, objective);
-        SetVehicleParamsEx(vehiculoid, 0, lights, alarm, doors, bonnet, boot, objective);
-        Motor[vehiculoid] = 0;
-        GameTextForPlayer(playerid,"~g~~h~Vehiculo Apagado",1000,3);
-        KillTimer(TimerGas[playerid]);
-    }
+		GetVehicleParamsEx(vehiculoid,engine, lights, alarm, doors, bonnet, boot, objective);
+		SetVehicleParamsEx(vehiculoid, 0, lights, alarm, doors, bonnet, boot, objective);
+		Motor[vehiculoid] = 0;
+		GameTextForPlayer(playerid,"~g~~h~Vehiculo Apagado",1000,3);
+		KillTimer(TimerGas[playerid]);
+	}
     return 1;
 }
 
